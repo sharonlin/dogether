@@ -1,0 +1,39 @@
+page-home {
+
+}
+
+.icons-basic-page {
+  ion-icon {
+    font-size: 50px;
+  }
+
+
+  header-category{
+    text-align: left;
+    padding: 10px 5px;
+  }
+
+  header-related{
+    text-align: right;
+    padding: 10px 5px;
+  }
+
+  ion-row {
+    height: 100%;
+    flex: 1;
+  }
+  //
+  //ion-col {
+  //  flex: 1 1;
+  //  //max-width: 25%;
+  //  //text-align: center;
+  //  padding: 10px 5px;
+  //}
+
+  //ion-grid {
+  //  padding: 0;
+  //  height: 100%;
+  //}
+
+
+}

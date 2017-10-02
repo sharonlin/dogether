@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Feedback</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content center text-center class="icons-basic-page">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing latest issues...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card *ngFor="let user of data">
+    <ion-toolbar>
+      <button *ngFor="let pipeline of user.pipelines" ion-button (click)="selectedPipeline(pipeline.name)">
+        {{pipeline.name}}
+      </button>
+    </ion-toolbar>
+    <ion-card-content>
+      <ion-list>
+        <ion-item-group *ngFor="let pipeline of user.pipelines">
+          <ion-item-divider color="light" [hidden]="!selectedPipelineName || pipeline.name!==selectedPipelineName">
+            {{pipeline.name}}
+          </ion-item-divider>
+          <!--{{pipeline.issues | json}}-->
+          <ion-item detail-push *ngFor="let issue of pipeline.issues" [hidden]="pipeline.name!==selectedPipelineName">
+            <ion-item-group>
+              <ion-item-divider color="light"><b>Build #{{issue.buildNumber}}</b></ion-item-divider>
+            </ion-item-group>
+            <ion-item-sliding *ngFor="let issue of issue.issues">
+              <!--(swipeleft)="itsMe(issue,user._id)" (swiperight)="notMe(issue,user._id)"-->
+              <ion-item style="border-bottom: 1px solid lightslategray">
+                <!--<ion-avatar item-start>-->
+                <!--<ion-icon name="clipboard"></ion-icon>-->
+                <!--</ion-avatar>-->
+                <!--<p> Build #{{issue.buildNumber}}</p>-->
+                <h2>{{issue.test_name }}</h2>
+                <p>{{issue.test_class }}</p>
+                <p [hidden]="!issue.comment"><b>Commit: </b>{{issue.comment }}</p>
+                <!--<button ion-button clear item-end>View</button>-->
+                <!--<p> Debug: {{issue.reasons | json }}</p>-->
+                <!--<h2> Is Blamed: {{issue.is_blamed }}</h2>-->
+              </ion-item>
+              <ion-item-options side="left">
+                <button ion-button color="danger" (click)="notMe(issue,user._id);">
+                  It's not me
+                </button>
+              </ion-item-options>
+              <ion-item-options side="right">
+                <button ion-button color="secondary" (click)="itsMe(issue,user._id);">
+                  Yes it's me
+                </button>
+              </ion-item-options>
+            </ion-item-sliding>
+          </ion-item>
+        </ion-item-group>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header [hidden]="!isEmpty">
+      <div >
+        <img [width]="image_width" [height]="image_height" [src]="randomGif">
+      </div>
+      <h1>No failed tests assigned to you :)</h1>
+    </ion-card-header>
+  </ion-card>
+
